@@ -1,4 +1,6 @@
 class V1::UsersController < ApplicationController
+  include ActionController::MimeResponds
+
   def create
     @user = User.create(user_params)
     respond_to do |format|
@@ -9,6 +11,6 @@ class V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:email)
+    params.require(:user).permit(:email, :picture)
   end
 end
