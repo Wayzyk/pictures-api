@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   namespace :v1 do
-    resource :users, only: :create
-    resource :pictures, only: [:create, :update] do
-      get :avatar, on: :member
-    end
+    resources :users, only: :create
+    resources :pictures
   end
 end
