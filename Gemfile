@@ -17,7 +17,7 @@ gem 'mongoid'
 # Uploading files
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mongoid-grid_fs', github: 'ahoward/mongoid-grid_fs'
-gem 'rmagick'
+gem 'mini_magick'
 
 # Serialize data
 gem 'active_model_serializers', '~> 0.10.0'
@@ -37,6 +37,10 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails', '~> 3.8.1'
+  gem 'rails-controller-testing', '~> 1.0.4'
+  gem 'shoulda-matchers', '~> 3.1.2', require: false
+  gem 'factory_trace', '~> 0.3.2'
   gem 'database_cleaner'
   gem 'mongoid-rspec'
   gem 'simplecov', require: false
