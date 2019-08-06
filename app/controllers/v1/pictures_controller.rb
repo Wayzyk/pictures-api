@@ -2,6 +2,32 @@
 
 module V1
   class PicturesController < ApiController
+
+    swagger_controller :pictures, 'Picture Managment'
+
+    swagger_api :index do
+      summary 'List all pictures'
+      notes 'List all pictures for current user'
+      param :form, :height, :integer, :optional, 'Height'
+      param :form, :width, :integer, :optional, 'Width'
+      response :unauthorized
+    end
+
+    swagger_api :create do
+      summary 'User add new picture'
+      params :form, :height, :integer, :optional, 'Height'
+      params :form, :width, :integer,:optional, 'Width'
+      response :unauthorized
+    end
+
+    swagger_api :update do
+      summary 'Updates an existing picture'
+      param :form, :height, :integer, :optional, 'Height'
+      param :form, :width, :integer, :optional, 'Width'
+      response :unauthorized
+      response :not_found
+    end
+    
     def index
       render_json data: { pictures: crop_pictures(@user.pictures) }
     end
@@ -60,36 +86,35 @@ module V1
 
     private
 
-      def original_picture
-        Picture.find(params[:id])&.original_picture
-      end
+    def original_picture
+      Picture.find(params[:id])&.original_picture
+    end
 
-      def scaled_picture
-        original_picture&.scaled
-      end
+    def scaled_picture
+      original_picture&.scaled
+    end
 
-      def render_picture(picture)
-        content = picture.read
-        if stale?(etag: content, public: true)
-          send_data content, type: picture.file.content_type, disposition: 'inline'
-          expires_in 0, public: true
-        end
+    def render_picture(picture)
+      content = picture.read
+      if stale?(etag: content, public: true)
+        send_data content, type: picture.file.content_type, disposition: 'inline'
+        expires_in 0, public: true
       end
+    end
 
-      def crop_pictures(pictures)
-        pictures.map do |picture|
-          {
-            id: picture.id.to_s,
-            height: picture.height,
-            width: picture.width,
-            link: full_picture_url(picture)
-          }
-        end
+    def crop_pictures(pictures)
+      pictures.map do |picture|
+        {
+          id: picture.id.to_s,
+          height: picture.height,
+          width: picture.width,
+          link: full_picture_url(picture)
+        }
       end
+    end
 
-      def full_picture_url(picture)
-        root_url + 'v1/picture' + picture.picture_url
-      end
+    def full_picture_url(picture)
+      root_url + 'v1/picture' + picture.picture_url
     end
   end
 end
