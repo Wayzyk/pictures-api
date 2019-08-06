@@ -22,6 +22,9 @@ gem 'mini_magick'
 # Serialize data
 gem 'active_model_serializers', '~> 0.10.0'
 
+# Configure API version
+gem 'versionist'
+
 group :development, :test do
   gem 'factory_bot_rails', '~> 4.11.1'
   gem 'faker', '~> 1.9.3'

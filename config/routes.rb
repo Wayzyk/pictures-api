@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  namespace :v1 do
+  api_version(:module => "V1", :path => {:value => "v1"}) do
     resources :users, only: :create
     resources :pictures, only: [:index, :create] do
       collection do
