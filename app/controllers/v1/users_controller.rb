@@ -1,17 +1,10 @@
-class V1::UsersController < ApplicationController
-  include ActionController::MimeResponds
-  skip_before_action :authenticate_user, :only => [:create]
-
+class V1::UsersController < ApiController
   def create
-    @user = User.create(user_params)
-    respond_to do |format|
-      format.json { render json: @user.as_json }
+    begin
+      @user = User.create!
+      render_json data: { token: @user.auth_token }
+    rescue Mongoid::Errors::MongoidError
+      render_json data: { token: nil }
     end
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:email, :picture)
   end
 end
